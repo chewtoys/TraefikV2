@@ -20,7 +20,7 @@ services:
     command: # CLI arguments
         ## Global Settings
       - --global.checkNewVersion=true
-      - --global.sendAnonymousUsage=true
+      - --global.sendAnonymousUsage=true # Annonymouse Usage to improve traefik
         ## Entrypoints Settings - https://docs.traefik.io/routing/entrypoints/#configuration ##
       - --entryPoints.http.address=:80
       - --entryPoints.https.address=:443
@@ -28,23 +28,23 @@ services:
       - --entrypoints.https.forwardedHeaders.trustedIPs=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/12,172.64.0.0/13,131.0.72.0/22
       - --entryPoints.traefik.address=:8080
         ## API Settings - https://docs.traefik.io/operations/api/
-      - --api.dashboard=true #Enables the traefik Dashboard
-      - --api.debug=true
-        ## Logs
-      - --log=true
-      - --log.level=DEBUG # (Default: error) DEBUG, INFO, WARN, ERROR, FATAL, PANIC
-      - --accessLog=true
-      - --accessLog.filePath=/traefik.log
+      - --api.dashboard=true # Enables the traefik Dashboard
+      - --api.debug=true # Enables the debugging facility of traefik
+        ## Log Settings - https://docs.traefik.io/observability/logs/
+      - --log=true # Enables logging
+      - --log.level=Warn # (Default: error) DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+      - --accessLog=true # Enables access logging
+      - --accessLog.filePath=/traefik.log # Location of Access log file
       - --accessLog.bufferingSize=100 # Configuring a buffer of 100 lines
       - --accessLog.filters.statusCodes=400-499
         ## Provider Settings - https://docs.traefik.io/providers/docker/#provider-configuration ##
       - --providers.docker=true
       - --providers.docker.endpoint=unix:///var/run/docker.sock
       - --providers.docker.defaultrule=Host(`{{ index .Labels "com.docker.compose.service" }}.$DOMAINNAME`)
-      - --providers.docker.exposedByDefault=false
-      - --providers.docker.network=t2_proxy
-      - --providers.docker.swarmMode=false
-      - --providers.file.directory=/rules # Load dynamic configuration from one or more .toml or .yml files in a directory.
+      - --providers.docker.exposedByDefault=false # Doesn't expose newly added containers by default
+      - --providers.docker.network=t2_proxy 
+      - --providers.docker.swarmMode=false # Disable SwarmMode for docker
+      - --providers.file.directory=/rules # Load dynamic configuration from one or more .toml or .yml files in the rules directory.
 #      - --providers.file.filename=/path/to/file # Load dynamic configuration from a file.
       - --providers.file.watch=true # Only works on top level files in the rules folder
         ## Certificate Settings (Let's Encrypt) -  https://docs.traefik.io/https/acme/#configuration-examples ##
