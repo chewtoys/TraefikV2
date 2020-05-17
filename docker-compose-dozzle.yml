@@ -1,4 +1,7 @@
+version: "3.8"
+
 # Dozzle - Real-time Docker Log Viewer
+services:
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -25,3 +28,7 @@
       ## HTTP Services
       - "traefik.http.routers.dozzle-rtr.service=dozzle-svc"
       - "traefik.http.services.dozzle-svc.loadbalancer.server.port=8080"
+      
+networks:
+    t2_proxy:
+        external: true

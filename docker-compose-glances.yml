@@ -1,4 +1,7 @@
+version: "3.8"
+
 # Glances - System Information
+services:
   glances:
     image: nicolargo/glances:latest
     container_name: glances
@@ -27,3 +30,7 @@
       ## HTTP Services
       - "traefik.http.routers.glances-rtr.service=glances-svc"
       - "traefik.http.services.glances-svc.loadbalancer.server.port=61208"
+      
+networks:
+    t2_proxy:
+        external: true

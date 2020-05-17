@@ -1,4 +1,7 @@
+version: "3.8"
+
 # Portainer - WebUI for Containers
+services:
   portainer:
     container_name: portainer
     image: portainer/portainer:latest
@@ -24,3 +27,7 @@
       ## HTTP Services
       - "traefik.http.routers.portainer-rtr.service=portainer-svc"
       - "traefik.http.services.portainer-svc.loadbalancer.server.port=9000"
+      
+networks:
+    t2_proxy:
+        external: true
