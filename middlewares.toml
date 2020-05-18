@@ -46,4 +46,4 @@
 
   [http.middlewares.middlewares-filtered]
     [http.middlewares.middlewares-filtered.ipWhiteList]
-      sourceRange = ["192.168.1.0/24", "88.98.251.194", "162.158.34.0/24"]
+      sourceRange = ["<IP Address/es>", "<IP Address/es>"]
