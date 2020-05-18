@@ -2,11 +2,23 @@
   [http.middlewares.chain-no-auth]
     [http.middlewares.chain-no-auth.chain]
       middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers"]
+	  
+  [http.middlewares.chain-no-auth-filtered]
+    [http.middlewares.chain-no-auth-filtered.chain]
+      middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers", "middlewares-filtered"]
 
   [http.middlewares.chain-basic-auth]
     [http.middlewares.chain-basic-auth.chain]
       middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers", "middlewares-basic-auth"]
+	  
+  [http.middlewares.chain-basic-auth-filtered]
+    [http.middlewares.chain-basic-auth-filtered.chain]
+      middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers", "middlewares-basic-auth", "middlewares-filtered"]
 
   [http.middlewares.chain-oauth]
     [http.middlewares.chain-oauth.chain]
       middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers", "middlewares-oauth"]
+
+  [http.middlewares.chain-oauth-filtered]
+    [http.middlewares.chain-oauth-filtered.chain]
+      middlewares = [ "middlewares-rate-limit", "middlewares-secure-headers", "middlewares-oauth", "middlewares-filtered"]

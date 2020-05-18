@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  bitwarden:
+    container_name: bitwarden_rs
+    image: bitwardenrs/server
+    restart: always
+    networks:
+      - t2_proxy
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - $USERDIR/bitwarden/data:/data
+    environment:
+      - WEBSOCKET_ENABLED=true # Required to use websockets
+      - WEB_VAULT_ENABLED=false # Disabled the vault web page so that bitwarden can only be used by desktop apps / Mobile apps
+      - SIGNUPS_ALLOWED=false  # set to false to disable signups
+      - INVITATIONS_ALLOWED=false # set to false to disallow already signed up users from sending invites
+      - SHOW_PASSWORD_HINT=false # Disable password hints
+      - LOG_FILE=/data/bitwarden.log
+    labels:
+      - "traefik.enable=true"
+      ## HTTP Routers
+      - "traefik.http.routers.bw-rtr.entrypoints=https"
+      - "traefik.http.routers.bw-rtr.rule=Host(`warden.$DOMAINNAME`)"
+      - "traefik.http.routers.bw-rtr.tls=true"
+      - "traefik.http.routers.bw-ws-rtr.entrypoints=https"
+      - "traefik.http.routers.bw-ws-rtr.rule=Host(`warden.$DOMAINNAME`) && Path(`/notifications/hub`)"
+      - "traefik.http.routers.bw-ws-rtr.tls=true"
+      ## Middlewares
+      - "traefik.http.routers.bw-rtr.middlewares=chain-no-auth-filtered@file" # Google OAuth 2.0 w/ IP Filter
+      ## HTTP Services
+      - "traefik.http.routers.bw-rtr.service=bw-svc"
+      - "traefik.http.services.bw-svc.loadbalancer.server.port=80"
+      - "traefik.http.routers.bw-ws-rtr.service=bw-ws-svc"
+      - "traefik.http.services.bw-ws-svc.loadbalancer.server.port=3012"
+      
+networks:
+    t2_proxy:
+        external: true
